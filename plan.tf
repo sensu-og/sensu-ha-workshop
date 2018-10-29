@@ -148,10 +148,6 @@ resource "aws_subnet" "main" {
     map("Name" , "main"))}"
 }
 
-data "template_file" "network_setup_script" {
-  template = "${file("network_setup.sh")}"
-}
-
 resource "null_resource" "bootstrap_rabbitmq" {
   count = 3
   connection {
@@ -162,7 +158,7 @@ resource "null_resource" "bootstrap_rabbitmq" {
     private_key = "${local.private_key}"
   }
   provisioner "file" {
-    content = "${data.template_file.network_setup_script.rendered}"
+    content = "${file("network_setup.sh")}"
     destination = "/home/centos/network_setup.sh"
   }
   provisioner "remote-exec" {
@@ -207,7 +203,7 @@ resource "null_resource" "bootstrap_redis" {
     private_key = "${local.private_key}"
   }
   provisioner "file" {
-    content = "${data.template_file.network_setup_script.rendered}"
+    content = "${file("network_setup.sh")}"
     destination = "/home/centos/network_setup.sh"
   }
   provisioner "remote-exec" {
