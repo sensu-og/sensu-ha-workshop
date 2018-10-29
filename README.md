@@ -32,7 +32,7 @@ Now you're ready to provision infrastructure:
 You may also provide values for variables via command-line flags:
 
 ```
-$ terraform apply -var key_name=cameron -var  key_path=/Users/cameron/.ssh/cameron-aws-us-west-2.pem
+$ terraform apply -var key_name=my_user -var key_path=~/.ssh/my_user-us-west-2.pem
 ```
 
 After a successful `terraform apply` you should see output providing IP
@@ -53,6 +53,12 @@ redis_ips = [
 ```
 
 You can print these again as needed by running `terraform output`.
+
+Accessing each of these systems is accomplished using ssh with the private key file and the username `centos`:
+
+```
+ssh -i ~/.ssh/my_user-us-west-2.pem centos@35.166.147.53
+```
 
 Finally, when you're done with the workshop run `terraform destroy` to tear down the infrastructure
 you've built to avoid any excess spending.
