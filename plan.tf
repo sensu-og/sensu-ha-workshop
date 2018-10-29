@@ -36,7 +36,6 @@ resource "aws_security_group" "poc" {
     protocol = "-1"
     ipv6_cidr_blocks = ["::/0"]
   }
-// SSH Access
   ingress {
     from_port   = 22
     to_port     = 22
@@ -45,7 +44,6 @@ resource "aws_security_group" "poc" {
     ipv6_cidr_blocks = ["::/0"]
     description = "SSH Access"
   }
-// backend dashboard listener port
   ingress {
     from_port   = 3000
     to_port     = 3000
@@ -54,7 +52,6 @@ resource "aws_security_group" "poc" {
     ipv6_cidr_blocks = ["::/0"]
     description = "backend dashboard listener port"
   }
-// backend rabbitmq listener port
   ingress {
     from_port   = 5671
     to_port     = 5672
@@ -63,7 +60,30 @@ resource "aws_security_group" "poc" {
     ipv6_cidr_blocks = ["::/0"]
     description = "backend rabbitmq listener port"
   }
-// agent socket
+    ingress {
+    from_port   = 15672
+    to_port     = 15672
+    protocol    = "TCP"
+    cidr_blocks = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+    description = "rabbitmq admin"
+  }
+  ingress {
+      from_port   = 25672
+      to_port     = 25672
+      protocol    = "TCP"
+      cidr_blocks = ["0.0.0.0/0"]
+      ipv6_cidr_blocks = ["::/0"]
+      description = "erlang distribution server"
+    }
+  ingress {
+      from_port   = 4369
+      to_port     = 4369
+      protocol    = "TCP"
+      cidr_blocks = ["0.0.0.0/0"]
+      ipv6_cidr_blocks = ["::/0"]
+      description = "erlang peer discovery epmd"
+    }
   ingress {
     from_port   = 3030
     to_port     = 3030
@@ -80,14 +100,13 @@ resource "aws_security_group" "poc" {
     ipv6_cidr_blocks = ["::/0"]
     description = "agent socket"
   }
-// agent http api
   ingress {
     from_port   = 3031
     to_port     = 3031
     protocol    = "TCP"
     cidr_blocks = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
-    description = "agent socket"
+    description = "agent http socket"
   }
 }
 
