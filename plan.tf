@@ -91,7 +91,7 @@ resource "aws_security_group" "poc" {
       cidr_blocks = ["0.0.0.0/0"]
       ipv6_cidr_blocks = ["::/0"]
       description = "redis"
-    }
+  }
   ingress {
       from_port   = 26379
       to_port     = 26379
@@ -99,7 +99,7 @@ resource "aws_security_group" "poc" {
       cidr_blocks = ["0.0.0.0/0"]
       ipv6_cidr_blocks = ["::/0"]
       description = "redis sentinel"
-    }
+  }
   ingress {
     from_port   = 3030
     to_port     = 3030
