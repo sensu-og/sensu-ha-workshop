@@ -1,4 +1,4 @@
-variable "username" {}
+variable "key_name" {}
 variable "key_path" {}
 
 variable "backend_instances" {
@@ -135,10 +135,10 @@ resource "aws_main_route_table_association" "a" {
 
 data "aws_canonical_user_id" "current" {}
 locals {
-  "account_name" = "${var.username}"
+  "account_name" = "${var.key_name}"
   "private_key" = "${file("${var.key_path}")}"
   common_tags = "${map(
-    "CreatedBy", "${var.username}",
+    "CreatedBy", "${var.key_name}",
   )}"
 }
 
@@ -162,7 +162,7 @@ resource "null_resource" "bootstrap_rabbitmq" {
     host = "${aws_instance.rabbitmq.*.public_ip[count.index]}"
     type = "ssh"
     user = "centos"
-    agent_identity = "${var.username}"
+    agent_identity = "${var.key_name}"
     private_key = "${local.private_key}"
   }
   provisioner "file" {
@@ -187,7 +187,7 @@ resource "aws_instance" "rabbitmq" {
   instance_type               = "m4.large"
   subnet_id                   = "${aws_subnet.main.id}"
   associate_public_ip_address = true
-  key_name                    = "${var.username}"
+  key_name                    = "${var.key_name}"
 
   timeouts {
      create = "10m"
@@ -195,7 +195,7 @@ resource "aws_instance" "rabbitmq" {
   }
   tags = "${merge(local.common_tags,
     map(
-    "Name" , "${var.username}.rabbitmq-${count.index}.sensu-ha",
+    "Name" , "${var.key_name}.rabbitmq-${count.index}.sensu-ha",
     )
   )}"
   vpc_security_group_ids = ["${aws_security_group.poc.id}"]
@@ -207,7 +207,7 @@ resource "null_resource" "bootstrap_redis" {
     host = "${aws_instance.redis.*.public_ip[count.index]}"
     type = "ssh"
     user = "centos"
-    agent_identity = "${var.username}"
+    agent_identity = "${var.key_name}"
     private_key = "${local.private_key}"
   }
   provisioner "file" {
@@ -231,18 +231,18 @@ resource "aws_instance" "redis" {
   instance_type               = "m4.large"
   subnet_id                   = "${aws_subnet.main.id}"
   associate_public_ip_address = true
-  key_name                    = "${var.username}"
+  key_name                    = "${var.key_name}"
 
   connection {
     type = "ssh"
     user = "centos"
-    agent_identity = "${var.username}"
+    agent_identity = "${var.key_name}"
     private_key = "${local.private_key}"
   }
 
   tags = "${merge(local.common_tags,
     map(
-    "Name" , "${var.username}.redis-${count.index}.sensu-ha",
+    "Name" , "${var.key_name}.redis-${count.index}.sensu-ha",
     "AgentName" , "agent-${count.index}"
     )
   )}"
