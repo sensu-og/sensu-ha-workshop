@@ -16,10 +16,46 @@
 _NOTE:_ Using the code in this project to provision resources will incur charges against the configured
 AWS account. In using this project you accept responsibility for any costs incurred.
 
+First, set environment variables as expected by AWS provider:
+
+```
+$ export AWS_ACCESS_KEY_ID="anaccesskey"
+$ export AWS_SECRET_ACCESS_KEY="asecretkey"
+$ export AWS_DEFAULT_REGION="us-west-2"
+```
+
+Now you're ready to provision infrastructure:
+
 * `terraform init` - installs required Terraform modules
 * `terraform apply` - provisions AWS resources described in plan.tf
-* `terraform output` - prints IP addresses of provisioned AWS EC2 instances
-* `terraform destroy` - destroys the provisioned AWS resources
+
+You may also provide values for variables via command-line flags:
+
+```
+$ terraform apply -var key_name=cameron -var  key_path=/Users/cameron/.ssh/cameron-aws-us-west-2.pem
+```
+
+After a successful `terraform apply` you should see output providing IP
+addresses for your EC2 instances:
+
+```
+Outputs:
+
+rabbitmq_ips = [
+    35.166.147.53,
+    34.211.69.229,
+    54.214.141.139
+]
+redis_ips = [
+    54.201.125.218,
+    54.245.153.124
+]
+```
+
+You can print these again as needed by running `terraform output`.
+
+Finally, when you're done with the workshop run `terraform destroy` to tear down the infrastructure
+you've built to avoid any excess spending.
 
 [terraform]: https://www.terraform.io
 [tf-install]: https://www.terraform.io/intro/getting-started/install.html
