@@ -24,8 +24,11 @@ First, set environment variables as expected by AWS provider:
 ```
 $ export AWS_ACCESS_KEY_ID="anaccesskey"
 $ export AWS_SECRET_ACCESS_KEY="asecretkey"
-$ export AWS_DEFAULT_REGION="us-west-2"
 ```
+
+_NOTE:_ The terraform plan uses us-west-2 region by default. If you wish to use
+a different region you will need to specify it as an argument to terraform
+apply, e.g.: `terraform apply -var region=us-west-1`
 
 Now you're ready to provision infrastructure:
 
