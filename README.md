@@ -5,7 +5,10 @@
 * [Terraform] with configured AWS provider
     * See [installation instructions here][tf-install].
 * AWS Account
-    * To configure the Terraform AWS provider with your credentials, see [instructions here][aws-creds].
+    * To configure the Terraform AWS provider with your credentials, see
+      [instructions here][aws-creds].
+* Acccess to CentOS 7 AMI
+    * Subscribe to this AMI [via the AWS Marketplace][centos-ami].
 * SSH key provisioned in AWS Account
     * See [AWS documentation on EC2 Key Pairs][ec2-keys] for more information.
     * Name of your SSH key should be provided as value of Terraform `key_name` variable.
@@ -67,3 +70,4 @@ you've built to avoid any excess spending.
 [tf-install]: https://www.terraform.io/intro/getting-started/install.html
 [aws-creds]: https://www.terraform.io/docs/providers/aws/
 [ec2-keys]: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
+[centos-ami]: https://aws.amazon.com/marketplace/pp/B00O7WM7QW
