@@ -1,10 +1,6 @@
 variable "key_name" {}
-variable "key_path" {}
 
-variable "backend_instances" {
-  description = "Number of Sensu Enterprise instances to deploy. Multiple backends are not automatically configured for HA."
-  default = 1
-}
+variable "key_path" {}
 
 variable "region" {
   default = "us-west-2"
