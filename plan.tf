@@ -53,6 +53,14 @@ resource "aws_security_group" "poc" {
     description = "backend dashboard listener port"
   }
   ingress {
+    from_port   = 4567
+    to_port     = 4567
+    protocol    = "TCP"
+    cidr_blocks = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+    description = "backend api listener port"
+  }
+  ingress {
     from_port   = 5671
     to_port     = 5672
     protocol    = "TCP"
