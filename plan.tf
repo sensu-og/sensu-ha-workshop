@@ -8,6 +8,7 @@ variable "region" {
 
 variable "centos_amis" {
   type = "map"
+
   default = {
     "us-east-1" = "ami-4bf3d731"
     "us-east-2" = "ami-e1496384"
@@ -17,120 +18,134 @@ variable "centos_amis" {
 }
 
 provider "aws" {
-  region     = "${var.region}"
+  region = "${var.region}"
 }
+
 resource "aws_security_group" "poc" {
   name        = "poc"
   description = "Allow inbound traffic"
   vpc_id      = "${aws_vpc.main.id}"
 
   egress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
   egress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
     ipv6_cidr_blocks = ["::/0"]
   }
+
   ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "TCP"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port        = 22
+    to_port          = 22
+    protocol         = "TCP"
+    cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
-    description = "SSH Access"
+    description      = "SSH Access"
   }
+
   ingress {
-    from_port   = 3000
-    to_port     = 3000
-    protocol    = "TCP"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port        = 3000
+    to_port          = 3000
+    protocol         = "TCP"
+    cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
-    description = "backend dashboard listener port"
+    description      = "backend dashboard listener port"
   }
+
   ingress {
-    from_port   = 4567
-    to_port     = 4567
-    protocol    = "TCP"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port        = 4567
+    to_port          = 4567
+    protocol         = "TCP"
+    cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
-    description = "backend api listener port"
+    description      = "backend api listener port"
   }
+
   ingress {
-    from_port   = 5671
-    to_port     = 5672
-    protocol    = "TCP"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port        = 5671
+    to_port          = 5672
+    protocol         = "TCP"
+    cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
-    description = "backend rabbitmq listener port"
+    description      = "backend rabbitmq listener port"
   }
-    ingress {
-    from_port   = 15672
-    to_port     = 15672
-    protocol    = "TCP"
-    cidr_blocks = ["0.0.0.0/0"]
+
+  ingress {
+    from_port        = 15672
+    to_port          = 15672
+    protocol         = "TCP"
+    cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
-    description = "rabbitmq admin"
+    description      = "rabbitmq admin"
   }
+
   ingress {
-      from_port   = 25672
-      to_port     = 25672
-      protocol    = "TCP"
-      cidr_blocks = ["0.0.0.0/0"]
-      ipv6_cidr_blocks = ["::/0"]
-      description = "erlang distribution server"
-    }
-  ingress {
-      from_port   = 4369
-      to_port     = 4369
-      protocol    = "TCP"
-      cidr_blocks = ["0.0.0.0/0"]
-      ipv6_cidr_blocks = ["::/0"]
-      description = "erlang peer discovery epmd"
-    }
-  ingress {
-      from_port   = 6379 
-      to_port     = 6379
-      protocol    = "TCP"
-      cidr_blocks = ["0.0.0.0/0"]
-      ipv6_cidr_blocks = ["::/0"]
-      description = "redis"
-  }
-  ingress {
-      from_port   = 26379
-      to_port     = 26379
-      protocol    = "TCP"
-      cidr_blocks = ["0.0.0.0/0"]
-      ipv6_cidr_blocks = ["::/0"]
-      description = "redis sentinel"
-  }
-  ingress {
-    from_port   = 3030
-    to_port     = 3030
-    protocol    = "TCP"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port        = 25672
+    to_port          = 25672
+    protocol         = "TCP"
+    cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
-    description = "agent socket"
+    description      = "erlang distribution server"
   }
+
   ingress {
-    from_port   = 3030
-    to_port     = 3030
-    protocol    = "UDP"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port        = 4369
+    to_port          = 4369
+    protocol         = "TCP"
+    cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
-    description = "agent socket"
+    description      = "erlang peer discovery epmd"
   }
+
   ingress {
-    from_port   = 3031
-    to_port     = 3031
-    protocol    = "TCP"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port        = 6379
+    to_port          = 6379
+    protocol         = "TCP"
+    cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
-    description = "agent http socket"
+    description      = "redis"
+  }
+
+  ingress {
+    from_port        = 26379
+    to_port          = 26379
+    protocol         = "TCP"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+    description      = "redis sentinel"
+  }
+
+  ingress {
+    from_port        = 3030
+    to_port          = 3030
+    protocol         = "TCP"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+    description      = "agent socket"
+  }
+
+  ingress {
+    from_port        = 3030
+    to_port          = 3030
+    protocol         = "UDP"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+    description      = "agent socket"
+  }
+
+  ingress {
+    from_port        = 3031
+    to_port          = 3031
+    protocol         = "TCP"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+    description      = "agent http socket"
   }
 }
 
@@ -151,7 +166,7 @@ resource "aws_route_table" "r" {
 
   route {
     ipv6_cidr_block = "::/0"
-    gateway_id = "${aws_internet_gateway.gw.id}"
+    gateway_id      = "${aws_internet_gateway.gw.id}"
   }
 
   tags = "${merge(local.common_tags,
@@ -160,10 +175,11 @@ resource "aws_route_table" "r" {
 
 resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"
-  tags = "${merge(local.common_tags,
+  tags       = "${merge(local.common_tags,
     map("Name" , "main"))}"
-  enable_dns_support = true
-  enable_dns_hostnames = true
+
+  enable_dns_support               = true
+  enable_dns_hostnames             = true
   assign_generated_ipv6_cidr_block = true
 }
 
@@ -173,19 +189,22 @@ resource "aws_main_route_table_association" "a" {
 }
 
 data "aws_canonical_user_id" "current" {}
+
 locals {
   "account_name" = "${var.key_name}"
-  "private_key" = "${file("${var.key_path}")}"
+  "private_key"  = "${file("${var.key_path}")}"
+
   common_tags = "${map(
     "CreatedBy", "${var.key_name}",
   )}"
 }
 
 resource "aws_subnet" "main" {
-  vpc_id     = "${aws_vpc.main.id}"
-  cidr_block = "10.0.1.0/24"
-  ipv6_cidr_block = "${cidrsubnet(aws_vpc.main.ipv6_cidr_block, 8, 1)}"
-  assign_ipv6_address_on_creation = true
+  vpc_id                          = "${aws_vpc.main.id}"
+  cidr_block                      = "10.0.1.0/24"
+  ipv6_cidr_block                 = "${cidrsubnet(aws_vpc.main.ipv6_cidr_block, 8, 1)}"
+  assign_ipv6_address_on_creation = true'
+  availability_zone               = "us-west-2a"
 
   tags = "${merge(local.common_tags,
     map("Name" , "main"))}"
@@ -193,17 +212,20 @@ resource "aws_subnet" "main" {
 
 resource "null_resource" "bootstrap_rabbitmq" {
   count = 3
+
   connection {
-    host = "${aws_instance.rabbitmq.*.public_ip[count.index]}"
-    type = "ssh"
-    user = "centos"
+    host           = "${aws_instance.rabbitmq.*.public_ip[count.index]}"
+    type           = "ssh"
+    user           = "centos"
     agent_identity = "${var.key_name}"
-    private_key = "${local.private_key}"
+    private_key    = "${local.private_key}"
   }
+
   provisioner "file" {
-    content = "${file("network_setup.sh")}"
+    content     = "${file("network_setup.sh")}"
     destination = "/home/centos/network_setup.sh"
   }
+
   provisioner "remote-exec" {
     inline = [
       "cd /home/centos",
@@ -211,7 +233,7 @@ resource "null_resource" "bootstrap_rabbitmq" {
       "sudo yum install -y jq",
       "echo IPv4 | sudo tee /etc/yum/vars/ip_resolve",
       "chmod +x /home/centos/network_setup.sh",
-      "sudo /home/centos/network_setup.sh"
+      "sudo /home/centos/network_setup.sh",
     ]
   }
 }
@@ -225,30 +247,35 @@ resource "aws_instance" "rabbitmq" {
   key_name                    = "${var.key_name}"
 
   timeouts {
-     create = "10m"
-     delete = "10m"
+    create = "10m"
+    delete = "10m"
   }
+
   tags = "${merge(local.common_tags,
     map(
     "Name" , "${var.key_name}.rabbitmq-${count.index}.sensu-ha",
     )
   )}"
+
   vpc_security_group_ids = ["${aws_security_group.poc.id}"]
 }
 
 resource "null_resource" "bootstrap_redis" {
   count = 2
+
   connection {
-    host = "${aws_instance.redis.*.public_ip[count.index]}"
-    type = "ssh"
-    user = "centos"
+    host           = "${aws_instance.redis.*.public_ip[count.index]}"
+    type           = "ssh"
+    user           = "centos"
     agent_identity = "${var.key_name}"
-    private_key = "${local.private_key}"
+    private_key    = "${local.private_key}"
   }
+
   provisioner "file" {
-    content = "${file("network_setup.sh")}"
+    content     = "${file("network_setup.sh")}"
     destination = "/home/centos/network_setup.sh"
   }
+
   provisioner "remote-exec" {
     inline = [
       "cd /home/centos",
@@ -256,10 +283,11 @@ resource "null_resource" "bootstrap_redis" {
       "sudo yum install -y jq",
       "echo IPv4 | sudo tee /etc/yum/vars/ip_resolve",
       "chmod +x /home/centos/network_setup.sh",
-      "sudo /home/centos/network_setup.sh"
+      "sudo /home/centos/network_setup.sh",
     ]
   }
 }
+
 resource "aws_instance" "redis" {
   count                       = 2
   ami                         = "${lookup(var.centos_amis, var.region)}"
@@ -269,10 +297,10 @@ resource "aws_instance" "redis" {
   key_name                    = "${var.key_name}"
 
   connection {
-    type = "ssh"
-    user = "centos"
+    type           = "ssh"
+    user           = "centos"
     agent_identity = "${var.key_name}"
-    private_key = "${local.private_key}"
+    private_key    = "${local.private_key}"
   }
 
   tags = "${merge(local.common_tags,
@@ -281,10 +309,12 @@ resource "aws_instance" "redis" {
     "AgentName" , "agent-${count.index}"
     )
   )}"
+
   timeouts {
-     create = "10m"
-     delete = "10m"
+    create = "10m"
+    delete = "10m"
   }
+
   vpc_security_group_ids = ["${aws_security_group.poc.id}"]
 }
 
